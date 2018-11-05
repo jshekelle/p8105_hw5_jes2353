@@ -14,6 +14,30 @@ library(purrr)
 ### Problem 1
 
 ```{r}
-list.files(path = ".data", pattern = NULL)
+list.files(path = ".data_problem_1", pattern = NULL, all.files = TRUE, full.names = TRUE, recursive = FALSE, ignore.case = FALSE)
+```
+
+
+### Problem 2
+
+```{r}
+homicide_data = read_csv(file = "./data_problem_2/homicide_data.csv")
+```
+
+The raw data contains 52,179 observations and 12 variables. Each observation is a homicide. Important variables are the city and state where it occured and the disposition (arrest made, case still open, closed without arrest, etc.). The dataset also contains the victims first and last name, sex, age, and the exact location of the homicide (longitude and latitude). 
+
+
+
+Creating a city_state variable
+
+```{r}
+homicide_data_clean = 
+homicide_data %>% 
+  group_by(city, state) %>% 
+  filter(disposition == "Closed by arrest") %>% 
+  summarise(total_solved = sum(n))
+              summarise(total_unsolved = filter(disposition = "Closed without arrest" |
+                                                  "Open/No arrest"))
+          
 ```
 
