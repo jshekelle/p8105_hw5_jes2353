@@ -1,0 +1,19 @@
+---
+title: "Homework 5"
+author: "Jeanette Shekelle"
+date: "11/5/2018"
+output: github_document
+---
+
+```{r}
+library(tidyverse)
+library(purrr)
+```
+
+
+### Problem 1
+
+```{r}
+list.files(path = ".data", pattern = NULL)
+```
+
