@@ -5,7 +5,7 @@ date: "11/5/2018"
 output: github_document
 ---
 
-```{r}
+```{r setup, include = FALSE}
 library(tidyverse)
 library(purrr)
 ```
@@ -14,7 +14,17 @@ library(purrr)
 ### Problem 1
 
 ```{r}
-list.files(path = ".data_problem_1", pattern = NULL, all.files = TRUE, full.names = TRUE, recursive = FALSE, ignore.case = FALSE)
+df = tibble(list.files(path = "./data"))
+is.list(df)
+```
+
+```{r}
+problem_1_df = 
+list.files(path = "./data_problem_1")
+```
+
+```{r}
+purrr::map (problem_1_df, read_csv(file = "./data_problem_1"))
 ```
 
 
@@ -28,16 +38,26 @@ The raw data contains 52,179 observations and 12 variables. Each observation is 
 
 
 
-Creating a city_state variable
+Looking at total homicides by city and state: 
 
 ```{r}
-homicide_data_clean = 
-homicide_data %>% 
+  homicide_data %>% 
+  mutate(city_state = paste(city, state, sep = ',')) %>% 
   group_by(city, state) %>% 
-  filter(disposition == "Closed by arrest") %>% 
-  summarise(total_solved = sum(n))
-              summarise(total_unsolved = filter(disposition = "Closed without arrest" |
-                                                  "Open/No arrest"))
-          
+  summarise(total_homicides = n()) %>% 
+  knitr::kable()
 ```
+
+
+Looking at total unsolved homicides:
+
+```{r}
+homicide_data %>% 
+  filter(str_detect(disposition, "open | without")) %>% 
+  mutate(city_state = paste(city, state, sep = ',')) %>% 
+  group_by(city, state) %>% 
+  summarise(total_unsolved = n()) %>% 
+  knitr::kable()
+```
+
 
