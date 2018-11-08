@@ -61,3 +61,24 @@ homicide_data %>%
 ```
 
 
+Proportion of unsolved homicides in Baltimore
+
+```{r}
+baltimore_unsolved = 
+  homicide_data %>% 
+  filter(str_detect(disposition, "open | without")) %>% 
+  filter(city == "Baltimore") %>% 
+  summarise(total_unsolved = n())
+```
+
+```{r}
+baltimore_total = 
+  homicide_data %>% 
+  filter(city == "Baltimore") %>% 
+  summarise(total_homicides = n())
+```
+
+```{r}
+baltimore_prop = prop.test(baltimore_unsolved, baltimore_total)
+```
+
