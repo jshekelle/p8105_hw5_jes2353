@@ -8,24 +8,32 @@ output: github_document
 ```{r setup, include = FALSE}
 library(tidyverse)
 library(purrr)
+
+set.seed(1234)
 ```
+
 
 
 ### Problem 1
 
-```{r}
-df = tibble(list.files(path = "./data"))
-is.list(df)
-```
+Bringing in data from desktop folder data_problem_1
 
 ```{r}
-problem_1_df = 
-list.files(path = "./data_problem_1")
+files_path = list.files(path = "./data_problem_1", full.names = TRUE) 
+remove_path = basename(list_path)
+  
+files_function = 
+  function(data, name){
+  list(read_csv(data) %>% 
+  mutate(id = name))
+}
+path_names = 
+  map2(files_path, remove_path, files_function)
+problem_1 = 
+  map_df(path_names, bind_rows)
+
 ```
 
-```{r}
-purrr::map (problem_1_df, read_csv(file = "./data_problem_1"))
-```
 
 
 ### Problem 2
@@ -43,7 +51,7 @@ Looking at total homicides by city and state:
 ```{r}
   homicide_data %>% 
   mutate(city_state = paste(city, state, sep = ',')) %>% 
-  group_by(city, state) %>% 
+  group_by(city_state) %>% 
   summarise(total_homicides = n()) %>% 
   knitr::kable()
 ```
@@ -55,7 +63,7 @@ Looking at total unsolved homicides:
 homicide_data %>% 
   filter(str_detect(disposition, "open | without")) %>% 
   mutate(city_state = paste(city, state, sep = ',')) %>% 
-  group_by(city, state) %>% 
+  group_by(city_state) %>% 
   summarise(total_unsolved = n()) %>% 
   knitr::kable()
 ```
@@ -66,8 +74,8 @@ Proportion of unsolved homicides in Baltimore
 ```{r}
 baltimore_unsolved = 
   homicide_data %>% 
-  filter(str_detect(disposition, "open | without")) %>% 
   filter(city == "Baltimore") %>% 
+  filter(str_detect(disposition, "open | without")) %>% 
   summarise(total_unsolved = n())
 ```
 
