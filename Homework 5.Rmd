@@ -8,6 +8,8 @@ output: github_document
 ```{r setup, include = FALSE}
 library(tidyverse)
 library(purrr)
+library(ggplot2)
+library(viridis)
 
 set.seed(1234)
 ```
@@ -15,6 +17,7 @@ set.seed(1234)
 
 
 ### Problem 1
+
 
 Bringing in data from desktop folder data_problem_1
 
@@ -34,6 +37,35 @@ problem_1 =
 
 ```
 
+```{r}
+list_path = list.files(path = "./data_problem_1", full.names = TRUE) 
+remove_path = basename(list_path)
+  
+files_function = 
+  function(data, name){
+  list(read_csv(data) %>% 
+  mutate(id = name))
+}
+path_names = 
+  map2(list_path, remove_path, files_function)
+problem_1_df = 
+  map_df(path_names, bind_rows)
+```
+
+
+
+Tidy the result; manipulate file names to include control arm and subject ID
+* Make columns variables and rows observations
+
+```{r}
+problem_1_df_clean = 
+problem_1_df %>% 
+  gather(key = "week", value = "value", week_1:week_8) %>% 
+  separate(id, into = c("arm","id"), sep = "_") %>% 
+  mutate(id = str_replace(id, ".csv", ""),
+         arm = str_replace(arm, "con", "control"), 
+         arm = str_replace(arm, "exp", "experimental")) 
+```
 
 
 ### Problem 2
