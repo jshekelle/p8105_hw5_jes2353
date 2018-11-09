@@ -1,7 +1,7 @@
 Homework 5
 ================
 Jeanette Shekelle
-11/5/2018
+11/9/2018
 
 ### Problem 1
 
@@ -436,5 +436,15 @@ baltimore_unsolved =
 baltimore_total = 
   homicide_data %>% 
   filter(city == "Baltimore") %>% 
-  summarise(total_homicides = n())
+  summarise(total_homicides = n()) 
 ```
+
+Using prop.test to get the proportion of unsolved homicides in Baltimore over the total number of Baltimore homicides.
+
+``` r
+baltimore_prop_test = prop.test(152, 2827)
+```
+
+The estimate is 0.05376. The 95% confidence interval is (0.0459, 0.0629).
+
+I know this is incomplete! I ran out of time! :(

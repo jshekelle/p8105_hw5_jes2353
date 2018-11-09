@@ -1,7 +1,7 @@
 ---
 title: "Homework 5"
 author: "Jeanette Shekelle"
-date: "11/5/2018"
+date: "11/9/2018"
 output: github_document
 ---
 
@@ -90,6 +90,7 @@ Looking at total homicides by city and state:
 ```
 
 
+
 Looking at total unsolved homicides:
 
 ```{r}
@@ -102,6 +103,7 @@ homicide_data %>%
 ```
 
 
+
 Proportion of unsolved homicides in Baltimore
 
 ```{r}
@@ -112,10 +114,23 @@ baltimore_unsolved =
   summarise(total_unsolved = n())
 ```
 
+
 ```{r}
 baltimore_total = 
   homicide_data %>% 
   filter(city == "Baltimore") %>% 
-  summarise(total_homicides = n())
+  summarise(total_homicides = n()) 
+
 ```
 
+
+Using prop.test to get the proportion of unsolved homicides in Baltimore over the total number of Baltimore homicides. 
+
+```{r}
+baltimore_prop_test = prop.test(152, 2827)
+
+```
+
+The estimate is 0.05376. The 95% confidence interval is (0.0459, 0.0629). 
+
+I know this is incomplete! I ran out of time! :(
