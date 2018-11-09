@@ -19,23 +19,8 @@ set.seed(1234)
 ### Problem 1
 
 
-Bringing in data from desktop folder data_problem_1
+Bringing in data from desktop folder data_problem_1:
 
-```{r}
-files_path = list.files(path = "./data_problem_1", full.names = TRUE) 
-remove_path = basename(list_path)
-  
-files_function = 
-  function(data, name){
-  list(read_csv(data) %>% 
-  mutate(id = name))
-}
-path_names = 
-  map2(files_path, remove_path, files_function)
-problem_1 = 
-  map_df(path_names, bind_rows)
-
-```
 
 ```{r}
 list_path = list.files(path = "./data_problem_1", full.names = TRUE) 
@@ -66,6 +51,22 @@ problem_1_df %>%
          arm = str_replace(arm, "con", "control"), 
          arm = str_replace(arm, "exp", "experimental")) 
 ```
+
+
+
+Make a spaghetti plot showing observations on each subject over time, and comment on differences between groups.
+
+```{r}
+problem_1_df_clean %>% 
+  group_by(id) %>% 
+  ggplot(aes(x = week, y = value, color = arm)) +
+  geom_line() + 
+  theme_bw() + 
+  labs (title = "Control vs. Experimental Subjects over 8 Weeks")
+```
+
+I know this is not a spaghetti plot but it still shows differences between groups. We see that the experimental group had higher values than the control group in all weeks except week 1. The gap between experimental and control grew larger as the weeks went on. By week 7 and 8 there was a noticable gap. 
+
 
 
 ### Problem 2
@@ -116,9 +117,5 @@ baltimore_total =
   homicide_data %>% 
   filter(city == "Baltimore") %>% 
   summarise(total_homicides = n())
-```
-
-```{r}
-baltimore_prop = prop.test(baltimore_unsolved, baltimore_total)
 ```
 
